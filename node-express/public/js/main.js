@@ -1,4 +1,5 @@
-const baseApiUrl = "http://localhost:4000/api";
+const baseUrl = "http://localhost:4000/";
+const baseApiUrl = baseUrl + "api";
 const urlEl = document.querySelector(".shortener-input");
 const formEl = document.querySelector("form.shortener");
 const resultEl = document.querySelector("div.result");
@@ -24,8 +25,8 @@ function showResult(result) {
   prevLink.appendChild(document.createTextNode(result.url));
   prevLink.href = result.url;
 
-  nextLink.appendChild(document.createTextNode(result.bitly));
-  nextLink.href = result.bitly;
+  nextLink.appendChild(document.createTextNode(baseUrl + result.bitly));
+  nextLink.href = baseUrl + result.bitly;
 
   resultEl.appendChild(prevLink);
   resultEl.appendChild(text);
