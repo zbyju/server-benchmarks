@@ -9,9 +9,9 @@ function sendUrl(url) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: {
+    body: JSON.stringify({
       url,
-    },
+    }),
   });
 }
 
@@ -19,13 +19,13 @@ function showResult(result) {
   resultEl.innerHTML = "";
   const prevLink = document.createElement("a");
   const text = document.createTextNode(" is now at ");
-  const newLink = document.createElement("a");
+  const nextLink = document.createElement("a");
 
   prevLink.appendChild(document.createTextNode(result.url));
   prevLink.href = result.url;
 
-  newLink.appendChild(document.createTextNode(result.bitly));
-  newLink.href = result.bitly;
+  nextLink.appendChild(document.createTextNode(result.bitly));
+  nextLink.href = result.bitly;
 
   resultEl.appendChild(prevLink);
   resultEl.appendChild(text);
@@ -51,6 +51,7 @@ formEl.addEventListener("submit", async function (e) {
     const res = await response.json();
     showResult(res);
   } catch (err) {
+    console.log(err);
     showError();
   }
 });
