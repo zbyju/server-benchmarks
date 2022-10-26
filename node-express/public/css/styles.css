@@ -42,3 +42,11 @@ form.shortener button.shortener-button {
 form.shortener button.shortener-button:hover {
   background: #aefcf8;
 }
+
+div.result {
+  margin-top: 10px;
+  border: 1px solid black;
+  background: #a29ffc;
+  padding: 5px;
+  border-radius: 5px;
+}
