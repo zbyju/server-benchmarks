@@ -2,6 +2,7 @@ const baseUrl = "http://localhost:4000/";
 const baseApiUrl = baseUrl + "api";
 const urlEl = document.querySelector(".shortener-input");
 const formEl = document.querySelector("form.shortener");
+const randomEl = document.querySelector("button.shortener-random");
 const resultEl = document.querySelector("div.result");
 
 function sendUrl(url) {
@@ -14,6 +15,10 @@ function sendUrl(url) {
       url,
     }),
   });
+}
+
+function goRandom() {
+  return fetch(baseUrl + "random", { method: "POST", redirect: "follow" });
 }
 
 function showResult(result) {
@@ -44,6 +49,17 @@ function showError() {
   resultEl.appendChild(paraEl);
 }
 
+function showErrorRandom() {
+  resultEl.innerHTML = "";
+  const paraEl = document.createElement("p");
+  paraEl.appendChild(
+    document.createTextNode(
+      "There has been an error when accessing random link!"
+    )
+  );
+  resultEl.appendChild(paraEl);
+}
+
 formEl.addEventListener("submit", async function (e) {
   e.preventDefault();
   const url = urlEl.value;
@@ -54,5 +70,17 @@ formEl.addEventListener("submit", async function (e) {
   } catch (err) {
     console.log(err);
     showError();
+  }
+});
+
+randomEl.addEventListener("click", async function (e) {
+  e.preventDefault();
+  try {
+    const response = await goRandom();
+    const res = await response.json();
+    window.location.href = res.url;
+  } catch (err) {
+    console.log(err);
+    showErrorRandom();
   }
 });

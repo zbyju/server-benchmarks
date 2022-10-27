@@ -8,10 +8,18 @@
   <title>Benchmark frontend</title>
 </head>
 <body>
+  <div>
+    <h2></h2>
+  </div>
   <form class="shortener">
-    <h1 class="shortener-heading">My URL shortener!</h1>
-    <input class="shortener-input" name="url" />
-    <button type="submit" class="shortener-button">Shorten!</button>
+    <div class="shortener-inputs">
+      <h1 class="shortener-heading">My URL shortener!</h1>
+      <input class="shortener-input" name="url" />
+    </div>
+    <div class="shortener-controls">
+      <button type="submit" class="shortener-button">Shorten!</button>
+      <button class="shortener-random">Random!</button>
+    </div>
   </form>
   <div class="result">
     <p>Please create a new link</p>
