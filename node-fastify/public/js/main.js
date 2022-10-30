@@ -60,6 +60,15 @@ function showErrorRandom() {
   resultEl.appendChild(paraEl);
 }
 
+function showEmptyRandom() {
+  resultEl.innerHTML = "";
+  const paraEl = document.createElement("p");
+  paraEl.appendChild(
+    document.createTextNode("No links found, can't go to a random website!")
+  );
+  resultEl.appendChild(paraEl);
+}
+
 formEl.addEventListener("submit", async function (e) {
   e.preventDefault();
   const url = urlEl.value;
@@ -78,6 +87,7 @@ randomEl.addEventListener("click", async function (e) {
   try {
     const response = await goRandom();
     const res = await response.json();
+    if (res.url === "") return showEmptyRandom();
     window.location.href = res.url;
   } catch (err) {
     console.log(err);
