@@ -26,25 +26,38 @@ async function generateBitly() {
 }
 
 async function saveUrl(body) {
+  const link = await getLinkByUrl(body.url);
+  if (link) return link;
   const bitly = await generateBitly();
+  await pool.query(
+    `INSERT INTO links(url, bitly) VALUES('${body.url}', '${bitly}')`
+  );
   return {
     url: body.url,
     bitly: bitly,
   };
 }
 
-function getEntry(bitly) {
-  return {
-    bitly,
-    url: "http://placeholder.com",
-  };
+async function getLinkByBitly(bitly) {
+  const { rows } = await pool.query(
+    `SELECT * FROM links WHERE bitly='${bitly}';`
+  );
+  if (rows.length === 0) return null;
+  return rows[0];
+}
+
+async function getLinkByUrl(url) {
+  const { rows } = await pool.query(`SELECT * FROM links WHERE url='${url}';`);
+  if (rows.length === 0) return null;
+  return rows[0];
 }
 
 async function getRandom() {
-  return {
-    bitly: "bitly",
-    url: "http://placeholder.com",
-  };
+  const { rows } = await pool.query(
+    "SELECT * FROM links ORDER BY RANDOM() LIMIT 1"
+  );
+  if (rows.length === 0) return null;
+  return rows[0];
 }
 
 app.post("/api/url", async (req, res) => {
@@ -52,13 +65,14 @@ app.post("/api/url", async (req, res) => {
   return res.status(201).json(bitly);
 });
 
-app.post("/random", (req, res) => {
-  const entry = getRandom();
+app.post("/random", async (req, res) => {
+  const entry = await getRandom();
+  if (entry === null) return res.status(200).json({ url: "" });
   return res.status(200).json(entry);
 });
 
 app.get("/:bitly", async (req, res) => {
-  const entry = await getEntry(req.params.bitly);
+  const entry = await getLinkByBitly(req.params.bitly);
   return res.redirect(entry.url);
 });
 

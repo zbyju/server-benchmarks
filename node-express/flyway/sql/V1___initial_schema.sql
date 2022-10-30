@@ -1,4 +1,4 @@
 CREATE TABLE links (
-    link TEXT PRIMARY KEY,
-    bitly TEXT UNIQUE,
+    url TEXT PRIMARY KEY,
+    bitly TEXT UNIQUE
 );
