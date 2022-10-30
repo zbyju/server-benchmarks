@@ -1,5 +1,7 @@
 import express from "express";
 import { customAlphabet } from "nanoid/async";
+import pg from "pg";
+const { Pool } = pg;
 
 // CONSTANTS
 const BITLY_LEN = 5; // should not be 6 to avoid collisions with 'random'
@@ -10,6 +12,8 @@ const port = process.env.PORT || 4000;
 
 app.use(express.static("public"));
 app.use(express.json());
+
+const pool = new Pool();
 
 function isBitlyOk(bitly) {
   return true;
@@ -61,3 +65,12 @@ app.get("/:bitly", async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+process.stdin.resume(); //so the program will not close instantly
+async function exitHandler() {
+  await pool.end();
+}
+process.on("exit", exitHandler);
+process.on("SIGINT", exitHandler);
+process.on("SIGUSR1", exitHandler);
+process.on("SIGUSR2", exitHandler);
