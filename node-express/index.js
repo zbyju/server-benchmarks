@@ -15,8 +15,9 @@ app.use(express.json());
 
 const pool = new Pool();
 
-function isBitlyOk(bitly) {
-  return true;
+async function isBitlyOk(bitly) {
+  const existing = await getLinkByBitly(bitly);
+  return existing === null;
 }
 
 async function generateBitly() {
@@ -72,6 +73,7 @@ app.post("/random", async (req, res) => {
 });
 
 app.get("/:bitly", async (req, res) => {
+  if (req.params.bitly === "favicon.ico") return res.status(400);
   const entry = await getLinkByBitly(req.params.bitly);
   return res.redirect(entry.url);
 });

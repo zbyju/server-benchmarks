@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  bitly:
+  bitly-express:
     build: .
     restart: "no"
     volumes:
@@ -9,22 +9,22 @@ services:
     ports:
       - 4000:4000
     depends_on:
-      - database
-      - flyway
+      - database-express
+      - flyway-express
     env_file:
       - project.env
 
-  database:
-    container_name: dab-p1-database-1b3da8a6-8f97-4a9f-956b-34b997d5f686
+  database-express:
+    container_name: dab-p1-database-express
     image: postgres:14.1
     restart: "no"
     env_file:
         - project.env
 
-  flyway:
+  flyway-express:
     image: flyway/flyway:8.4.0-alpine
     depends_on:
-      - database
+      - database-express
     volumes:
       - .:/flyway/sql
     command: -connectRetries=60 -baselineOnMigrate=true migrate
