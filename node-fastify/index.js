@@ -50,7 +50,7 @@ async function saveUrl(body) {
 
 async function getLinkByBitly(bitly) {
   const { rows } = await pool.query(
-    `SELECT * FROM links WHERE bitly='${bitly}';`
+    `SELECT * FROM links WHERE bitly='>${bitly}';`
   );
   if (rows.length === 0) return null;
   return rows[0];
@@ -81,14 +81,14 @@ fastify.post("/random", async (req, res) => {
   return res.status(200).send(entry);
 });
 
-fastify.get("/>:bitly)", async (req, res) => {
+fastify.get("/>:bitly", async (req, res) => {
   const entry = await getLinkByBitly(req.params.bitly);
   return res.redirect(entry.url);
 });
 
 const start = async () => {
   try {
-    await fastify.listen({ port });
+    await fastify.listen({ port, host: "0.0.0.0" });
     console.log("Server started on port: " + port);
   } catch (err) {
     fastify.log.error(err);
@@ -99,7 +99,6 @@ start();
 
 process.stdin.resume(); //so the program will not close instantly
 async function exitHandler() {
-  console.log("end");
   await pool.end();
 }
 process.on("exit", exitHandler);
