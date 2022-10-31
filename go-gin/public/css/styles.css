@@ -1,0 +1,82 @@
+*, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #010924;
+}
+
+form.shortener {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #bad1ff;
+}
+
+form.shortener div.shortener-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+}
+
+form.shortener div.shortener-controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  border-top: 1px solid black;
+  background: #89affa;
+}
+
+form.shortener input.shortener-input {
+  padding: 3px;
+}
+
+form.shortener button.shortener-button {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #c2fffc;
+  transition: 0.5s all;
+}
+
+form.shortener button.shortener-button:hover {
+  background: #aefcf8;
+}
+
+form.shortener button.shortener-random {
+  display: inline-block;
+  width: fit-content;
+  padding: 3px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background: #97dbd8;
+  transition: 0.5s all;
+}
+
+form.shortener button.shortener-random:hover {
+  background: #87d6d3;
+}
+
+div.result {
+  margin-top: 10px;
+  border: 1px solid black;
+  background: #a29ffc;
+  padding: 5px;
+  border-radius: 5px;
+}
