@@ -13,7 +13,7 @@ const BITLY_PREFIX = ">"; // fastify could not differentiate between '/' and '/:
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const fastify = Fastify({
-  logger: true,
+  logger: false,
 });
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", BITLY_LEN);
 const port = process.env.PORT || 4000;
@@ -33,6 +33,10 @@ async function generateBitly() {
   let bitly = BITLY_PREFIX + (await nanoid());
   while (!isBitlyOk(bitly)) bitly = BITLY_PREFIX + (await nanoid());
   return bitly;
+}
+
+async function deleteAll() {
+  await pool.query("TRUNCATE links;");
 }
 
 async function saveUrl(body) {
@@ -70,7 +74,13 @@ async function getRandom() {
   return rows[0];
 }
 
+fastify.delete("/api/url", async (req, res) => {
+  await deleteAll();
+  return res.status(200).send();
+});
+
 fastify.post("/api/url", async (req, res) => {
+  if (!req.body.url) return res.status(400).send();
   const bitly = await saveUrl(req.body);
   return res.status(201).send(bitly);
 });

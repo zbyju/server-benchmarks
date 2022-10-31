@@ -1,0 +1,12 @@
+{
+  "name": "k6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "k6:index": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < index.js",
+    "k6:send": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < send.js",
+    "k6:redirect": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < redirect.js",
+    "k6:random": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < random.js"
+  }
+}

@@ -4,6 +4,7 @@ import pg from "pg";
 const { Pool } = pg;
 
 // CONSTANTS
+const BITLY_PREFIX = ">";
 const BITLY_LEN = 5; // should not be 6 to avoid collisions with 'random'
 
 const app = express();
@@ -21,9 +22,13 @@ async function isBitlyOk(bitly) {
 }
 
 async function generateBitly() {
-  let bitly = await nanoid();
-  while (!isBitlyOk(bitly)) bitly = nanoid();
+  let bitly = BITLY_PREFIX + (await nanoid());
+  while (!isBitlyOk(bitly)) bitly = BITLY_PREFIX + (await nanoid());
   return bitly;
+}
+
+async function deleteAll() {
+  await pool.query("TRUNCATE links;");
 }
 
 async function saveUrl(body) {
@@ -41,7 +46,7 @@ async function saveUrl(body) {
 
 async function getLinkByBitly(bitly) {
   const { rows } = await pool.query(
-    `SELECT * FROM links WHERE bitly='${bitly}';`
+    `SELECT * FROM links WHERE bitly='>${bitly}';`
   );
   if (rows.length === 0) return null;
   return rows[0];
@@ -61,7 +66,13 @@ async function getRandom() {
   return rows[0];
 }
 
+app.delete("/api/url", async (req, res) => {
+  await deleteAll();
+  return res.status(200).send();
+});
+
 app.post("/api/url", async (req, res) => {
+  if (!req.body.url) return res.status(400).send();
   const bitly = await saveUrl(req.body);
   return res.status(201).json(bitly);
 });
@@ -72,7 +83,7 @@ app.post("/random", async (req, res) => {
   return res.status(200).json(entry);
 });
 
-app.get("/:bitly", async (req, res) => {
+app.get("/>:bitly", async (req, res) => {
   if (req.params.bitly === "favicon.ico") return res.status(400);
   const entry = await getLinkByBitly(req.params.bitly);
   return res.redirect(entry.url);
