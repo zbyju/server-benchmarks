@@ -24,15 +24,8 @@ fastify.register(fastifyStatic, {
   root: path.join(__dirname, "public"),
 });
 
-async function isBitlyOk(bitly) {
-  const existing = await getLinkByBitly(bitly);
-  return existing === null;
-}
-
 async function generateBitly() {
-  let bitly = BITLY_PREFIX + (await nanoid());
-  while (!isBitlyOk(bitly)) bitly = BITLY_PREFIX + (await nanoid());
-  return bitly;
+  return BITLY_PREFIX + (await nanoid());
 }
 
 async function deleteAll() {
@@ -43,9 +36,19 @@ async function saveUrl(body) {
   const link = await getLinkByUrl(body.url);
   if (link) return link;
   const bitly = await generateBitly();
-  await pool.query(
-    `INSERT INTO links(url, bitly) VALUES('${body.url}', '${bitly}')`
-  );
+  try {
+    await pool.query(
+      `INSERT INTO links(url, bitly) VALUES('${body.url}', '${bitly}')`
+    );
+  } catch (err) {
+    if (err.code === "23505") {
+      // Duplicate error
+      const bitly = await generateBitly();
+      await pool.query(
+        `INSERT INTO links(url, bitly) VALUES('${body.url}', '${bitly}')`
+      );
+    }
+  }
   return {
     url: body.url,
     bitly: bitly,
