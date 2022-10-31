@@ -36,16 +36,16 @@ function generateUrls(n) {
 }
 
 export function setup() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
   const urls = saveUrls(1000);
   return { urls };
 }
 
 export default function (data) {
   const bitly = data.urls[Math.floor(Math.random() * data.urls.length)];
-  http.get(`http://localhost:4000/${bitly}`);
+  http.get(`http://host.docker.internal:4000/${bitly}`);
 }
 
 export function teardown() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
 }

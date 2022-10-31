@@ -11,7 +11,7 @@ function generateUrl() {
 }
 
 export function setup() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
 }
 
 export default function () {
@@ -23,9 +23,9 @@ export default function () {
       "Content-Type": "application/json",
     },
   };
-  http.post("http://localhost:4000/api/url", payload, params);
+  http.post("http://host.docker.internal:4000/api/url", payload, params);
 }
 
 export function teardown() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
 }

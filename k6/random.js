@@ -37,14 +37,14 @@ function generateUrls(n) {
 }
 
 export function setup() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
   saveUrls(1000);
 }
 
 export default function () {
-  http.get("http://localhost:4000/random");
+  http.get("http://host.docker.internal:4000/random");
 }
 
 export function teardown() {
-  http.del("http://localhost:4000/api/url");
+  http.del("http://host.docker.internal:4000/api/url");
 }
