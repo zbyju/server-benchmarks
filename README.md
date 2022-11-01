@@ -18,11 +18,11 @@ I tried to keep the implementations as similar as possbile to each other, especi
 
 **Endpoints**:
 
-- `GET /` - index page - serves `index.html`, `styles.css` and `main.js`
-- `POST /api/url` - adds a url to the database and returns the url with the bitly version
+- **INDEX** - `GET /` - index page - serves `index.html`, `styles.css` and `main.js`
+- **SEND** - `POST /api/url` - adds a url to the database and returns the url with the bitly version
 - `DELETE /api/url` - deletes all the links in the database
-- `/>:bitly` - redirects to the url behind the bitly code
-- `/random` - returns a url to a random website from the database
+- **REDIRECT** - `/>:bitly` - redirects to the url behind the bitly code
+- **RANDOM** - `/random` - returns a url to a random website from the database
 
 ## How to run the application
 
