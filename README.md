@@ -1,7 +1,80 @@
-# Project 1 report
+# Aalto University - CS-E4770 - Project 1
 
-Write the project report here. Do not include your personal
-details (e.g. name or student number).
+This is a repository for the CS-E4770 (Designing and Building Scalable Web Applications) course's first project. The goal of this project is to build a https://bitly.com clone in a language + framework of our choosing, then using the same language, but a different framework implement the same application, finally implement the same application again in a different language. The main objective is to then compare the performance of these three implementations.
+
+I decided to use **Node.js + Express**, **Node.js + Fastify** and **Go + Gin**.
+
+It is important to note that this was the first time I've used Go and it shows on the quality of the code.
+
+---
+
+*Disclaimer*
+
+As the main purpose of this project was to get familiar with performance testing and the whole application is for only this purpose, I did not focus on writing very clean or performent code (the possible improvements are discussed later in the report). The main focus was on keeping the code and the structure of the application as simple as possible.
+
+## Implementation
+
+I tried to keep the implementations as similar as possbile to each other, especially the design of the endpoints (these endpoints are not exactly trying to satisfy the REST architecture).
+
+**Endpoints**:
+
+- `GET /` - index page - serves `index.html`, `styles.css` and `main.js`
+- `POST /api/url` - adds a url to the database and returns the url with the bitly version
+- `DELETE /api/url` - deletes all the links in the database
+- `/>:bitly` - redirects to the url behind the bitly code
+- `/random` - returns a url to a random website from the database
+
+## How to run the application
+
+To run any of the three applications, you will need docker and then by simply opening any of the three folders (`node-express`, `node-fastify` and `go-gin`) in your terminal, you can then run: `docker-compose up --build`.
+
+To run the k6 scripts, you will need k6 installed and then when opening the `k6` folder in the terminal you can run any of these commands to start the benchmark for the respective endpoints:
+
+```
+yarn k6:index
+yarn k6:send
+yarn k6:redirect
+yarn k6:random
+```
+
+Obviously to run the k6 scripts you need to one of the applications first (it will run on port 4000) so that k6 can send requests to it.
+
+## Methodology
+
+I tried to make the tests as atomic as possible, they will delete all the links before and after the test and create their own random data every time.
+
+The results were collected from 5 runs from which I always picked the best run as that seemed like a good way of reducing the randomness, but still keeping the data collecting very simple.
+
+The tests were run using the following parameters:
+
+```
+Default postgress settings
+Logging turned off
+
+K6 - VUS=10
+K6 - Duration=10s
+```
+
+## Results
+
+I tested the performance using k6 and will be showing:
+
+- Average request per second
+- Times waiting for a response in ms
+     - Average
+     - Median
+     - Maximum
+     - p90 value
+     - p95 value
+
+The results are shown in the following tables:
+
+![Index](/report/index.png)
+![Send](/report/send.png)
+![Redirect](/report/redirect.png)
+![Random](/report/random.png)
+
+Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far. Apart from storing new urls in the database, in which case it is just slightly worse than the fastify implementation.
 
 # Data
 
