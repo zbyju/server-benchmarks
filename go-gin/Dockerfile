@@ -1,9 +1,11 @@
 FROM golang:alpine
 
 ENV GIN_MODE=release
+ENV PORT=4000
 
 WORKDIR /usr/app
-COPY . /usr/app
+COPY go.mod ./go.mod 
+COPY go.sum ./go.sum
 
 RUN apk update && apk add --no-cache git
 RUN go get ./...
@@ -12,4 +14,5 @@ RUN npm install -g nodemon
 
 EXPOSE 4000
 
-CMD ["nodemon", "--exec", "go run main.go", "--signal", "SIGTERM"]
+# nodemon --legacy-watch <working-dir> -e go --exec "go run main.go"
+CMD ["nodemon", "--legacy-watch", "-e", "go", "--exec", "go run main.go", "--signal", "SIGTERM"]
