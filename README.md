@@ -74,7 +74,7 @@ The results are shown in the following tables:
 ![Redirect](/report/redirect.png)
 ![Random](/report/random.png)
 
-Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far. Apart from storing new urls in the database, in which case it is just slightly worse than the fastify implementation.
+Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far; apart from storing new URLs in the database, in which case it is just slightly worse than the fastify implementation.
 
 # Data
 
