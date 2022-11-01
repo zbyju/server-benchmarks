@@ -1,0 +1,32 @@
+version: "3.4"
+
+services:
+  bitly-gin:
+    build: .
+    restart: "no"
+    volumes:
+      - ./:/usr/app
+    ports:
+      - 4000:4000
+    depends_on:
+      - database-gin
+      - flyway-gin
+    env_file:
+      - project.env
+
+  database-gin:
+    container_name: dab-p1-database-gin
+    image: postgres:14.1
+    restart: "no"
+    env_file:
+        - project.env
+
+  flyway-gin:
+    image: flyway/flyway:8.4.0-alpine
+    depends_on:
+      - database-gin
+    volumes:
+      - .:/flyway/sql
+    command: -connectRetries=60 -baselineOnMigrate=true migrate
+    env_file:
+      - project.env
