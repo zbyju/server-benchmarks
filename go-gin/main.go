@@ -27,7 +27,7 @@ func linkToJson(link Link) map[string]any {
 }
 
 func generateBitly() *string {
-	id, err := gonanoid.Generate("abcdefghijklmnopqrstuvwxyz", 5)
+	id, err := gonanoid.Generate("abcdefghijklmnopqrstuvwxyz", 10)
 	if err != nil {
 		return nil
 	}

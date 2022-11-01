@@ -7,7 +7,7 @@ import pg from "pg";
 const { Pool } = pg;
 
 // CONSTANTS
-const BITLY_LEN = 5; // should not be 6 to avoid collisions with 'random'
+const BITLY_LEN = 10; // should not be 6 to avoid collisions with 'random'
 const BITLY_PREFIX = ">"; // fastify could not differentiate between '/' and '/:bitly' endpoints
 
 const __filename = fileURLToPath(import.meta.url);

@@ -5,7 +5,7 @@ const { Pool } = pg;
 
 // CONSTANTS
 const BITLY_PREFIX = ">";
-const BITLY_LEN = 5; // should not be 6 to avoid collisions with 'random'
+const BITLY_LEN = 10; // should not be 6 to avoid collisions with 'random'
 
 const app = express();
 const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz", BITLY_LEN);
