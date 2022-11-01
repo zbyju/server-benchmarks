@@ -67,6 +67,7 @@ func saveUrl(url string, db *sql.DB) *Link {
 
 func getRandom(db *sql.DB) *Link {
 	rows, err := db.Query("SELECT * FROM links ORDER BY RANDOM() LIMIT 1")
+	defer rows.Close()
 
 	if err != nil {
 		return nil
@@ -83,6 +84,7 @@ func getRandom(db *sql.DB) *Link {
 
 func getLinkByUrl(url string, db *sql.DB) *Link {
 	rows, err := db.Query("SELECT * FROM links WHERE url=$1;", url)
+	defer rows.Close()
 
 	if err != nil {
 		return nil
@@ -100,6 +102,7 @@ func getLinkByUrl(url string, db *sql.DB) *Link {
 func getLinkByBitly(bitly string, db *sql.DB) *Link {
 	bitly = ">" + bitly
 	rows, err := db.Query("SELECT * FROM links WHERE bitly=$1;", bitly)
+	defer rows.Close()
 
 	if err != nil {
 		return nil
@@ -115,7 +118,7 @@ func getLinkByBitly(bitly string, db *sql.DB) *Link {
 }
 
 func main() {
-	r := gin.Default()
+	r := gin.New()
 
 	connStr := "postgresql://username:password@dab-p1-database-gin/database?sslmode=disable"
 	// Connect to database
@@ -123,6 +126,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	db.SetMaxOpenConns(99)
+	db.SetMaxIdleConns(50)
 
 	r.DELETE("/api/url", func(c *gin.Context) {
 		deleteAll(db)
@@ -137,8 +142,9 @@ func main() {
 		link := saveUrl(requestBody.Url, db)
 		if link == nil {
 			c.String(500, "Internal error")
+		} else {
+			c.JSON(200, linkToJson(*link))
 		}
-		c.JSON(200, linkToJson(*link))
 	})
 
 	r.POST("/random", func(c *gin.Context) {
@@ -147,8 +153,9 @@ func main() {
 			c.JSON(404, gin.H{
 				"url": "",
 			})
+		} else {
+			c.JSON(200, linkToJson(*link))
 		}
-		c.JSON(200, linkToJson(*link))
 	})
 
 	r.GET("/>:bitly", func(c *gin.Context) {

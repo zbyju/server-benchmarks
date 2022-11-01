@@ -5,4 +5,4 @@ RUN yarn install
 COPY . .
 EXPOSE 4000
 RUN npm install -g nodemon
-CMD ["node index.js"]
+CMD ["node", "index.js"]
