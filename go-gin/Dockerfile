@@ -15,4 +15,5 @@ RUN npm install -g nodemon
 EXPOSE 4000
 
 # nodemon --legacy-watch <working-dir> -e go --exec "go run main.go"
-CMD ["nodemon", "--legacy-watch", "-e", "go", "--exec", "go run main.go", "--signal", "SIGTERM"]
+# CMD ["nodemon", "--legacy-watch", "-e", "go", "--exec", "go run main.go", "--signal", "SIGTERM"]
+CMD ["go", "run", "main.go"]
