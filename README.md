@@ -37,11 +37,13 @@ yarn k6:redirect
 yarn k6:random
 ```
 
-Obviously to run the k6 scripts you need to one of the applications first (it will run on port 4000) so that k6 can send requests to it.
+Obviously to run the k6 scripts you need to run one of the applications first (it will run on port 4000) so that k6 can send requests to it.
 
 ## Methodology
 
 I tried to make the tests as atomic as possible, they will delete all the links before and after the test and create their own random data every time.
+
+I ran the tests on my Macbook Pro (Intel chip) in one session (right after each other) to try to minimize other applications/load affecting the results.
 
 The results were collected from 5 runs from which I always picked the best run as that seemed like a good way of reducing the randomness, but still keeping the data collecting very simple.
 
@@ -74,7 +76,29 @@ The results are shown in the following tables:
 ![Redirect](/report/redirect.png)
 ![Random](/report/random.png)
 
-Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far; apart from storing new URLs in the database, in which case it is just slightly worse than the fastify implementation.
+Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far; apart from storing new URLs in the database, in which case it is just slightly worse than the fastify implementation. I suspect this has something to do with bad configuration when connectiong to the database.
+
+## Developer time
+
+I have used Express a lot in the past and so I was very confident with what I was doing. I thought that my experience with Fastify will be similar, but ran into a lot of trouble when trying to serve static files.
+
+I ended up having to add the little `>` for the redirection endpoint so that Fastify would be able to tell the difference between `/` and `/:bitly` endpoints. I tried other approaches as well but was not successful.
+
+Much like with Express I had no trouble with Gin and I can imagine everything would be pretty smooth if I had the same experience with the language and framework.
+
+# Improvements
+
+The most obvious improvement would be to use a caching mechanism in a form of a in-memory database - Redis would be a really good candidate for that.
+
+Another improvement would be to customize the configuration of the PostgreSQL database to suite the needs of the application. Something is obviously wrong there when it comes to the Go implementation. 
+
+Some other minor changes could be done to the code, especially when it comes to my Go implementation as I have no prior experience with Go, I'm certain the performance can be optimized in that regard.
+
+# Conclusion
+
+I've used Node.js and Go to implement a bitly clone three different times using Express, Fastify and Gin. The results conclusively say that Go was by far the fastest, especially when reading and retrieving data. Fastify and Express implementations were more comparable, but Fastify was overall slightly better than Express.
+
+When it came to developer time I would say that express was the easiest to use (this is very biased as I have used it extensively before), followed by Gin and Fastify was more problematic.
 
 # Data
 
