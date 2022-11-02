@@ -78,6 +78,8 @@ The results are shown in the following tables:
 
 Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far; apart from storing new URLs in the database, in which case it is just slightly worse than the fastify implementation. I suspect this has something to do with bad configuration when connectiong to the database.
 
+I was also very surprised as to how much logging to the console slowed down the application, in some cases it was more slowing down the application by more than 50%. At first I was very confused about the results of the Fastify and Gin implementations as they were much slower than expect compared to Express, which I later figured was caused by the default configuration of these frameworks, which make it so that every request gets logged into the console.
+
 ## Developer time
 
 I have used Express a lot in the past and so I was very confident with what I was doing. I thought that my experience with Fastify will be similar, but ran into a lot of trouble when trying to serve static files.
