@@ -65,16 +65,14 @@ I tested the performance using k6 and will be showing:
 - Times waiting for a response in ms
      - Average
      - Median
-     - Maximum
      - p90 value
      - p95 value
+     - p99 value
 
-The results are shown in the following tables:
+The results are shown in the #Data section at the end of this report or in the following tables:
 
-![Index](/report/index.png)
-![Send](/report/send.png)
-![Redirect](/report/redirect.png)
-![Random](/report/random.png)
+![Results](/report/results.png)
+
 
 Although I'm a terrible Go developer (as this literally my first project written in Go) it is the most performent implementation by far; apart from storing new URLs in the database, in which case it is just slightly worse than the fastify implementation. I suspect this has something to do with bad configuration when connectiong to the database.
 
@@ -109,29 +107,29 @@ When it came to developer time I would say that express was the easiest to use (
 ### Index
 
 ```
-http_req_waiting...............: avg=11.54ms min=0s med=9.85ms max=1.01s p(90)=13.78ms p(95)=15.62ms 
-http_reqs......................: 8454 840.353279/s
+http_req_waiting...............: avg=11.3ms med=10.81ms p(90)=15.07ms p(95)=16.64ms p(99)=20.63ms
+http_reqs......................: 8649 857.744676/s
 ```
 
 ### Random
 
 ```
-http_req_waiting...............: avg=9.34ms min=1.55ms med=8.84ms max=124.79ms p(90)=13.84ms p(95)=16.45ms 
-http_reqs......................: 10466 850.582451/s
+http_req_waiting...............: avg=9.69ms med=8.95ms p(90)=14.81ms p(95)=18.06ms p(99)=28.64ms
+http_reqs......................: 10156 812.117177/s
 ```
 
 ### Redirect
 
 ```
-http_req_waiting...............: avg=9.23ms min=1.48ms med=8.4ms max=126.22ms p(90)=14.27ms p(95)=17.24ms 
-     http_reqs......................: 10501 849.913504/s
+http_req_waiting...............: avg=9.58ms med=9.01ms p(90)=14.45ms p(95)=16.9ms p(99)=26.75ms
+http_reqs......................: 10119 808.791371/s
 ```
 
 ### Send
 
 ```
-http_req_waiting...............: avg=10.21ms min=3.19ms med=9.82ms max=50ms p(90)=13.34ms p(95)=14.7ms  
-http_reqs......................: 9356 932.746229/s
+iteration_duration.............: avg=10.49ms med=10.12ms p(90)=13.62ms p(95)=15.05ms p(99)=19.29ms
+iterations.....................: 9499 949.117659/s
 ```
 
 ## Fastify
@@ -139,29 +137,29 @@ http_reqs......................: 9356 932.746229/s
 ### Index
 
 ```
-http_req_waiting...............: avg=10.27ms min=0s med=9.79ms max=58.24ms p(90)=13.84ms p(95)=15.25ms
-http_reqs......................: 9464 941.76206/s
+http_req_waiting...............: avg=10.26ms med=9.67ms p(90)=14.03ms p(95)=15.83ms p(99)=20.61ms
+http_reqs......................: 9500 942.200476/s
 ```
 
 ### Random
 
 ```
-http_req_waiting...............: avg=8.78ms min=925.33µs med=7.34ms max=219.48ms p(90)=13.78ms p(95)=17.94ms 
-http_reqs......................: 11100 935.340027/s
+http_req_waiting...............: avg=8.48ms med=7.1ms p(90)=13.29ms p(95)=17.07ms p(99)=30.81ms
+http_reqs......................: 11517 972.620581/s
 ```
 
 ### Redirect
 
 ```
-http_req_waiting...............: avg=8.65ms min=1.18ms med=7.4ms max=160.27ms p(90)=13.53ms p(95)=17.21ms 
-http_reqs......................: 11093 934.52634/s
+http_req_waiting...............: avg=8.51ms med=7.13ms p(90)=13.23ms p(95)=16.86ms p(99)=34.28ms
+http_reqs......................: 11362 946.910303/s
 ```
 
 ### Send
 
 ```
-http_req_waiting...............: avg=7.77ms min=2.36ms med=7.52ms max=36.63ms p(90)=10.12ms p(95)=11.16ms 
-http_reqs......................: 12025 1199.251856/s
+http_req_waiting...............: avg=7.78ms med=7.55ms p(90)=10.06ms p(95)=10.98ms p(99)=13.24ms
+http_reqs......................: 12103 1209.606963/s
 ```
 
 ## Go Gin
@@ -169,27 +167,27 @@ http_reqs......................: 12025 1199.251856/s
 ### Index
 
 ```
-http_req_waiting...............: avg=7.11ms min=0s med=6.66ms max=29.05ms p(90)=10.25ms p(95)=11.6ms  
-http_reqs......................: 13600 1360.313603/s
+http_req_waiting...............: avg=7.29ms med=6.91ms p(90)=10.35ms p(95)=11.63ms p(99)=14.57ms 
+http_reqs......................: 13284 1328.439468/s
 ```
 
 ### Random
 
 ```
-http_req_waiting...............: avg=2.73ms min=1.02ms med=2.58ms max=40.37ms p(90)=3.68ms p(95)=4.15ms  
-http_reqs......................: 31497 2573.014482/s
+http_req_waiting...............: avg=2.78ms med=2.63ms p(90)=3.74ms p(95)=4.23ms p(99)=5.62ms
+http_reqs......................: 31030 2492.419467/s
 ```
 
 ### Redirect
 
 ```
-http_req_waiting...............: avg=3.08ms min=959.76µs med=2.59ms max=1.01s p(90)=3.74ms p(95)=4.27ms  
-http_reqs......................: 30036 2288.219012/s
+http_req_waiting...............: avg=2.79ms med=2.64ms p(90)=3.79ms p(95)=4.31ms p(99)=5.65ms
+http_reqs......................: 30073 2423.569929/s
 ```
 
 ### Send
 
 ```
-http_req_waiting...............: avg=8.48ms min=2.09ms med=7.94ms max=28.28ms p(90)=12.13ms p(95)=13.86ms 
-http_reqs......................: 11267 1123.589898/s
+http_req_waiting...............: avg=8.53ms med=7.93ms p(90)=12.22ms p(95)=13.85ms p(99)=18.29ms
+http_reqs......................: 11218 1118.80819/s
 ```
