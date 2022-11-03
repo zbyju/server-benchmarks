@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "k6:index": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < index.js",
-    "k6:send": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < send.js",
-    "k6:redirect": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < redirect.js",
-    "k6:random": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s - < random.js"
+    "k6:index": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s --summary-trend-stats=\"avg,med,p(90),p(95),p(99),p(99.99),count\" --quiet - < index.js",
+    "k6:send": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s --summary-trend-stats=\"avg,med,p(90),p(95),p(99),p(99.99),count\" --quiet - < send.js",
+    "k6:redirect": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s --summary-trend-stats=\"avg,med,p(90),p(95),p(99),p(99.99),count\" --quiet - < redirect.js",
+    "k6:random": "docker run --rm --network host -i grafana/k6 run --vus 10 --duration 10s  --summary-trend-stats=\"avg,med,p(90),p(95),p(99),p(99.99),count\" --quiet - < random.js"
   }
 }
